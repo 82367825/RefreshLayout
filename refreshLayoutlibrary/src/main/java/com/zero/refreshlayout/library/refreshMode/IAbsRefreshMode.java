@@ -7,6 +7,8 @@ package com.zero.refreshlayout.library.refreshMode;
 
 public interface IAbsRefreshMode {
     
+    boolean isAnimRunning();
+    
     void moveHeaderView(float distance);
     
     void moveFooterView(float distance);

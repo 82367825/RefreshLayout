@@ -2,8 +2,10 @@ package com.zero.refreshlayout.library;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
 
 import com.zero.refreshlayout.library.footer.AbsFooterView;
@@ -31,12 +33,14 @@ public class RefreshLayout extends FrameLayout implements IRefreshLayout {
     private float mDragObstruction = 0.75f;
     private AbsHeaderView mAbsHeaderView;
     private AbsFooterView mAbsFooterView;
-    private RefreshMode mRefreshMode;
+    private RefreshMode mRefreshMode = RefreshMode.LINEAR;
     private AbsRefreshMode mAbsRefreshMode;
     
     private View mContentView;
     
-    private boolean mIsBeingDragged;
+    private boolean mIsLayoutInit;
+    private boolean mIsBeingDownDragged;
+    private boolean mIsBeingUpDragged;
     private float mTouchSlop;
     private float mInitialDownY;
     
@@ -57,25 +61,30 @@ public class RefreshLayout extends FrameLayout implements IRefreshLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
         if (getChildCount() == 0 || getChildCount() >= 2) {
 //            throw new Exception("");
         }
-        if (mIsHeaderViewEnable && mAbsHeaderView == null) {
-            return ;
+        mContentView = getChildAt(0);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        if (!mIsLayoutInit) {
+            initLayout();
+            mIsLayoutInit = true;
         }
-        if (mIsFooterViewEnable && mAbsFooterView == null) {
-            return ;
-        }
-        if (getChildCount() == 1) {
-            mContentView = getChildAt(0);
-        }
+    }
+    
+    private void initLayout() {
         if (getHeaderViewHeight() == 0) {
-            getAbsHeaderView().measure(0, 0);
-            setHeaderViewHeight(getAbsHeaderView().getMeasuredHeight());
+            getAbsHeaderView().getContentView().measure(0, 0);
+            setHeaderViewHeight(getAbsHeaderView().getContentView().getMeasuredHeight());
         }
         if (getFooterViewHeight() == 0) {
-            getAbsFooterView().measure(0, 0);
-            setFooterViewHeight(getAbsFooterView().getMeasuredHeight());
+            getAbsFooterView().getContentView().measure(0, 0);
+            setFooterViewHeight(getAbsFooterView().getContentView().getMeasuredHeight());
         }
         if (getHeaderViewPullDistance() == 0) {
             setHeaderViewPullDistance(getHeaderViewHeight());
@@ -91,18 +100,13 @@ public class RefreshLayout extends FrameLayout implements IRefreshLayout {
         }
         mAbsRefreshMode = RefreshModeFactory.createRefreshMode(mRefreshMode, this);
     }
-    
-    
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (RefreshScrollUtil.canChildPullUp(mContentView) || 
-                RefreshScrollUtil.canChildPullDown(mContentView)) {
-            return false;
-        }
-        
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                mIsBeingDragged = false;
+                mIsBeingDownDragged = false;
+                mIsBeingUpDragged = false;
                 mInitialDownY = ev.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -111,64 +115,71 @@ public class RefreshLayout extends FrameLayout implements IRefreshLayout {
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                mIsBeingDragged = false;
+                mIsBeingDownDragged = false;
+                mIsBeingUpDragged = false;
                 break;
         }
-        return mIsBeingDragged;
+        return mIsBeingDownDragged || mIsBeingUpDragged;
     }
     
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (RefreshScrollUtil.canChildPullUp(mContentView) || 
-                RefreshScrollUtil.canChildPullDown(mContentView)) {
-            return false;
-        }
-        
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                mIsBeingDragged = false;
+                mIsBeingDownDragged = false;
+                mIsBeingUpDragged = false;
+                mInitialDownY = ev.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
                 final float y = ev.getY();
                 startDragging(y);
-                if (mIsBeingDragged) {
-                    final float moveDistance = (getY() - mInitialDownY) * mDragObstruction;
-                    if (moveDistance > 0) {
-                        mAbsRefreshMode.moveHeaderView(moveDistance);
-                    } else {
-                        mAbsRefreshMode.moveFooterView(moveDistance);
-                    }
+                float moveDistance = (ev.getY() - mInitialDownY) * mDragObstruction;
+                if (mIsBeingDownDragged && moveDistance > 0) {
+                    mAbsRefreshMode.moveHeaderView(moveDistance);
+                } else if (mIsBeingUpDragged && moveDistance < 0) {
+                    mAbsRefreshMode.moveHeaderView(moveDistance);
                 }
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                if (mIsBeingDragged) {
-                    final float moveDistance = (getY() - mInitialDownY) * mDragObstruction;
-                    mIsBeingDragged = false;
-                    if (moveDistance > 0 ) {
-                        if (Math.abs(moveDistance) > mHeaderViewPullDistance) {
-                            mAbsRefreshMode.moveToRefresh();
-                        } else {
-                            mAbsRefreshMode.finishHeaderView(moveDistance);
+                float resultDistance = (ev.getY() - mInitialDownY) * mDragObstruction;
+                if (mIsBeingDownDragged && resultDistance > 0) {
+                    if (Math.abs(resultDistance) > mHeaderViewPullDistance) {
+                        mAbsRefreshMode.moveToRefresh();
+                        if (mRefreshListener != null) {
+                            mRefreshListener.onRefresh();
                         }
                     } else {
-                        if (Math.abs(moveDistance) > mFooterViewPullDistance) {
-                            mAbsRefreshMode.moveToLoadMore();
-                        } else {
-                            mAbsRefreshMode.finishFooterView(moveDistance);   
+                        mAbsRefreshMode.finishHeaderView(resultDistance);
+                    }
+                } else if (mIsBeingUpDragged && resultDistance < 0) {
+                    if (Math.abs(resultDistance) > mFooterViewPullDistance) {
+                        mAbsRefreshMode.moveToLoadMore();
+                        if (mRefreshListener != null) {
+                            mRefreshListener.onLoadMore();
                         }
+                    } else {
+                        mAbsRefreshMode.finishFooterView(resultDistance);
                     }
                 }
-                return false;
+                break;
         }
-        
         return true;
     }
     
     private void startDragging(float y) {
         final float yDiff = y - mInitialDownY;
-        if (Math.abs(yDiff) > mTouchSlop && !mIsBeingDragged) {
-            mIsBeingDragged = true;
+        if (Math.abs(yDiff) > mTouchSlop 
+                && !mIsBeingUpDragged && !mIsBeingDownDragged && !mAbsRefreshMode.isAnimRunning()) {
+            if (yDiff > 0) {
+                if (!RefreshScrollUtil.canChildPullDown(mContentView)) {
+                    mIsBeingDownDragged = true;
+                }
+            } else {
+                if (!RefreshScrollUtil.canChildPullUp(mContentView)) {
+                    mIsBeingUpDragged = true;
+                }
+            }
         }
     }
     

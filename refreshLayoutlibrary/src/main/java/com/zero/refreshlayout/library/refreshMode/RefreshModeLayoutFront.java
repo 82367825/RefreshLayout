@@ -19,6 +19,11 @@ public class RefreshModeLayoutFront extends AbsRefreshMode {
     }
 
     @Override
+    public boolean isAnimRunning() {
+        return false;
+    }
+
+    @Override
     public void moveHeaderView(float distance) {
         
     }

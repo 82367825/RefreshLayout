@@ -92,9 +92,11 @@ public class RefreshModeLinear extends AbsRefreshMode {
             if (mRefreshLayout.getFooterViewMaxPullDistance() > Math.abs(distance)) {
                 /* ContentView上移 */
                 mContentLayoutParams.bottomMargin = (int) Math.abs(distance);
+                mContentLayoutParams.topMargin = -mContentLayoutParams.bottomMargin;
                 mRefreshLayout.getContentView().setLayoutParams(mContentLayoutParams);
             } else {
                 mContentLayoutParams.bottomMargin = mRefreshLayout.getFooterViewMaxPullDistance();
+                mContentLayoutParams.topMargin = -mContentLayoutParams.bottomMargin;
                 mRefreshLayout.getContentView().setLayoutParams(mContentLayoutParams);
             }
             mRefreshLayout.requestLayout();
@@ -130,6 +132,7 @@ public class RefreshModeLinear extends AbsRefreshMode {
             public void onAnimationUpdate(ValueAnimator animation) {
                 int value = (int) animation.getAnimatedValue();
                 mContentLayoutParams.bottomMargin = value;
+                mContentLayoutParams.topMargin = -mContentLayoutParams.bottomMargin;
                 mRefreshLayout.getContentView().setLayoutParams(mContentLayoutParams);
                 mRefreshLayout.requestLayout();
             }
@@ -196,6 +199,7 @@ public class RefreshModeLinear extends AbsRefreshMode {
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (float) animation.getAnimatedValue();
                 mContentLayoutParams.bottomMargin = (int) (startValueContentView + (0 - startValueContentView) * value);
+                mContentLayoutParams.topMargin = - mContentLayoutParams.bottomMargin;
                 mRefreshLayout.getContentView().setLayoutParams(mContentLayoutParams);
                 mFooterLayoutParams.bottomMargin = (int) (startValueFooterView + (-mFooterLayoutParams.height - startValueFooterView) * value);
                 mRefreshLayout.getAbsFooterView().getContentView().setLayoutParams(mFooterLayoutParams);

@@ -83,6 +83,7 @@ public class RefreshModeLayoutFront extends AbsRefreshMode {
                 mRefreshLayout.getContentView().setLayoutParams(mContentLayoutParams);
             } else {
                 mContentLayoutParams.bottomMargin = mRefreshLayout.getFooterViewMaxPullDistance();
+                mContentLayoutParams.topMargin = -mContentLayoutParams.bottomMargin;
                 mRefreshLayout.getContentView().setLayoutParams(mContentLayoutParams);
             }
             mRefreshLayout.requestLayout();
@@ -118,6 +119,7 @@ public class RefreshModeLayoutFront extends AbsRefreshMode {
             public void onAnimationUpdate(ValueAnimator animation) {
                 int value = (int) animation.getAnimatedValue();
                 mContentLayoutParams.bottomMargin = value;
+                mContentLayoutParams.topMargin = -mContentLayoutParams.bottomMargin;
                 mRefreshLayout.getContentView().setLayoutParams(mContentLayoutParams);
                 mRefreshLayout.requestLayout();
             }
@@ -180,6 +182,7 @@ public class RefreshModeLayoutFront extends AbsRefreshMode {
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (float) animation.getAnimatedValue();
                 mContentLayoutParams.bottomMargin = (int) (startValueContentView + (0 - startValueContentView) * value);
+                mContentLayoutParams.topMargin = -mContentLayoutParams.bottomMargin;
                 mRefreshLayout.getContentView().setLayoutParams(mContentLayoutParams);
                 mRefreshLayout.getAbsFooterView().onFinishPullUp(Math.abs(mFooterLayoutParams.bottomMargin) / mRefreshLayout.getFooterViewHeight());
                 mRefreshLayout.requestLayout();

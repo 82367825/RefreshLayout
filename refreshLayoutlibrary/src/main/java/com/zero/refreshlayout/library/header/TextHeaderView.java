@@ -37,7 +37,7 @@ public class TextHeaderView extends AbsHeaderView {
 
     @Override
     public void onFinishPullDown(float fraction) {
-
+        
     }
 
     @Override

@@ -3,19 +3,5 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    
-    <com.zero.refreshlayout.library.RefreshLayout
-        android:id="@+id/refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        
-        <View
-            android:gravity="center"
-            android:background="@android:color/darker_gray"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-        
-        
-    </com.zero.refreshlayout.library.RefreshLayout>
 
 </LinearLayout>

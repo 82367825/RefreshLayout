@@ -17,9 +17,9 @@ public interface IAbsRefreshMode {
     
     void moveToLoadMore();
     
-    void finishHeaderView(float distance);
+    void finishHeaderView();
     
-    void finishFooterView(float distance);
+    void finishFooterView();
     
     void destroy();
     

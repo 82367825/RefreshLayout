@@ -21,8 +21,11 @@ import com.zero.refreshlayout.library.refreshMode.RefreshModeFactory;
 
 public class RefreshLayout extends FrameLayout implements IRefreshLayout {
     
-    private boolean mIsHeaderViewEnable;
-    private boolean mIsFooterViewEnable;
+    private static final boolean DEFAULT_HEADER_VIEW_ENABLE = true;
+    private static final boolean DEFAULT_FOOTER_VIEW_ENABLE = true;
+    private static final float DEFAULT_DRAG_OBSTRUCTION = 0.75f;
+    private boolean mIsHeaderViewEnable = DEFAULT_HEADER_VIEW_ENABLE;
+    private boolean mIsFooterViewEnable = DEFAULT_FOOTER_VIEW_ENABLE;
     private int mHeaderViewHeight;
     private int mFooterViewHeight;
     private int mHeaderViewPullDistance;
@@ -30,7 +33,7 @@ public class RefreshLayout extends FrameLayout implements IRefreshLayout {
     private int mHeaderViewMaxPullDistance;
     private int mFooterViewMaxPullDistance;
 
-    private float mDragObstruction = 0.75f;
+    private float mDragObstruction = DEFAULT_DRAG_OBSTRUCTION;
     private AbsHeaderView mAbsHeaderView;
     private AbsFooterView mAbsFooterView;
     private RefreshMode mRefreshMode = RefreshMode.LINEAR;
@@ -134,32 +137,32 @@ public class RefreshLayout extends FrameLayout implements IRefreshLayout {
                 final float y = ev.getY();
                 startDragging(y);
                 float moveDistance = (ev.getY() - mInitialDownY) * mDragObstruction;
-                if (mIsBeingDownDragged && moveDistance > 0) {
+                if (mIsBeingDownDragged && moveDistance >= 0) {
                     mAbsRefreshMode.moveHeaderView(moveDistance);
-                } else if (mIsBeingUpDragged && moveDistance < 0) {
-                    mAbsRefreshMode.moveHeaderView(moveDistance);
+                } else if (mIsBeingUpDragged && moveDistance <= 0) {
+                    mAbsRefreshMode.moveFooterView(moveDistance);
                 }
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 float resultDistance = (ev.getY() - mInitialDownY) * mDragObstruction;
-                if (mIsBeingDownDragged && resultDistance > 0) {
+                if (mIsBeingDownDragged) {
                     if (Math.abs(resultDistance) > mHeaderViewPullDistance) {
                         mAbsRefreshMode.moveToRefresh();
                         if (mRefreshListener != null) {
                             mRefreshListener.onRefresh();
                         }
                     } else {
-                        mAbsRefreshMode.finishHeaderView(resultDistance);
+                        mAbsRefreshMode.finishHeaderView();
                     }
-                } else if (mIsBeingUpDragged && resultDistance < 0) {
+                } else if (mIsBeingUpDragged) {
                     if (Math.abs(resultDistance) > mFooterViewPullDistance) {
                         mAbsRefreshMode.moveToLoadMore();
                         if (mRefreshListener != null) {
                             mRefreshListener.onLoadMore();
                         }
                     } else {
-                        mAbsRefreshMode.finishFooterView(resultDistance);
+                        mAbsRefreshMode.finishFooterView();
                     }
                 }
                 break;
@@ -200,12 +203,12 @@ public class RefreshLayout extends FrameLayout implements IRefreshLayout {
 
     @Override
     public void finishRefresh() {
-        mAbsRefreshMode.finishHeaderView(1);
+        mAbsRefreshMode.finishHeaderView();
     }
 
     @Override
     public void finishLoadMore() {
-        mAbsRefreshMode.finishFooterView(-1);
+        mAbsRefreshMode.finishFooterView();
     }
 
     public AbsHeaderView getAbsHeaderView() {

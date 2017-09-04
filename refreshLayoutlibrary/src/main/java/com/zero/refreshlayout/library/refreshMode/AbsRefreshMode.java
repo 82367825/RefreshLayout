@@ -9,6 +9,11 @@ import com.zero.refreshlayout.library.RefreshLayout;
  */
 
 public abstract class AbsRefreshMode implements IAbsRefreshMode {
+
+    protected static final int ANIM_TIME_FINISH_REFRESH = 500;
+    protected static final int ANIM_TIME_FINISH_LOAD_MORE = 500;
+    protected static final int ANIM_TIME_MOVE_TO_REFRESH = 500;
+    protected static final int ANIM_TIME_MOVE_TO_LOAD_MORE = 500;
     
     protected RefreshLayout mRefreshLayout;
     

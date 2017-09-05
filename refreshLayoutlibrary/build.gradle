@@ -70,7 +70,7 @@ install {
                     developer {
                         id 'linzewu'    //填写的一些基本信息
                         name 'linzewu'
-                        email 'zewuling@gmail.com'
+                        email 'linzewu5555@gmail.com'
                     }
                 }
                 scm {

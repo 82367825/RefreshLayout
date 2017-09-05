@@ -1,5 +1,6 @@
 package com.zero.refreshlayout.library;
 
+import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.widget.AbsListView;
@@ -51,6 +52,16 @@ public class RefreshScrollUtil {
         } else {
             return ViewCompat.canScrollVertically(targetView, 1);
         }
+    }
+    
+    public static int dip2px(Context context, float var1) {
+        float var2 = context.getResources().getDisplayMetrics().density;
+        return (int) (var1 * var2 + 0.5F);
+    }
+
+    public static int px2dip(Context context, float var1) {
+        float var2 = context.getResources().getDisplayMetrics().density;
+        return (int) (var1 / var2 + 0.5F);
     }
     
 }

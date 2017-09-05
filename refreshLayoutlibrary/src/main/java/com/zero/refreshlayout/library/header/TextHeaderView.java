@@ -18,9 +18,10 @@ public class TextHeaderView extends AbsHeaderView {
     public TextHeaderView(Context context) {
         super(context);
         mTextView = new TextView(context);
+        mTextView.setBackgroundColor(0xFFFFFFFF);
         mTextView.setTextColor(0xFF000000);
         mTextView.setTextSize(20);
-        mTextView.setPadding(20, 20, 20, 20);
+        mTextView.setPadding(50, 50, 50, 50);
         mTextView.setGravity(Gravity.CENTER);
         mTextView.setText("下拉刷新");
     }

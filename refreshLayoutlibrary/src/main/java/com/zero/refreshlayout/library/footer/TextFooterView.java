@@ -17,9 +17,10 @@ public class TextFooterView extends AbsFooterView {
     public TextFooterView(Context context) {
         super(context);
         mTextView = new TextView(context);
+        mTextView.setBackgroundColor(0xFFFFFFFF);
         mTextView.setTextColor(0xFF000000);
         mTextView.setTextSize(20);
-        mTextView.setPadding(20, 20, 20, 20);
+        mTextView.setPadding(50, 50, 50, 50);
         mTextView.setGravity(Gravity.CENTER);
         mTextView.setText("上拉加载更多");
     }

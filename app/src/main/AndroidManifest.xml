@@ -19,6 +19,10 @@
         <activity android:name=".RecyclerViewActivity"/>
         <activity android:name=".ScrollViewActivity"/>
         <activity android:name=".TextViewActivity"/>
+        <activity android:name=".theme.LightHeaderActivity"/>
+        <activity android:name=".theme.SquareSpreadActivity"/>
+        <activity android:name=".theme.RoundSpreadActivity"/>
+        <activity android:name=".theme.BezierWaveActivity"/>
         
     </application>
 

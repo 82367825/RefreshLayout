@@ -3,14 +3,14 @@
 
 
 
-引入方式：
+>引入方式：
 ```
 com.zero.refreshlayout.library:RefreshLayout:1.0.0
 ```
 
 ## 1 基本代码调用
 ```
-mRefreshLayout.setHeaderView(new TextHeaderView(this));
+        mRefreshLayout.setHeaderView(new TextHeaderView(this));
         mRefreshLayout.setFooterView(new TextFooterView(this));
         mRefreshLayout.setRefreshListener(new RefreshListener() {
             @Override

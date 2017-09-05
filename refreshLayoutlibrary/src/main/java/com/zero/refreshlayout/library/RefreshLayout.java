@@ -66,7 +66,7 @@ public class RefreshLayout extends FrameLayout implements IRefreshLayout {
         super.onFinishInflate();
         mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
         if (getChildCount() == 0 || getChildCount() >= 2) {
-//            throw new Exception("");
+            throw new IllegalStateException("RefreshLayout should get only one child view.");
         }
         mContentView = getChildAt(0);
     }
@@ -81,25 +81,37 @@ public class RefreshLayout extends FrameLayout implements IRefreshLayout {
     }
     
     private void initLayout() {
-        if (getHeaderViewHeight() == 0) {
-            getAbsHeaderView().getContentView().measure(0, 0);
-            setHeaderViewHeight(getAbsHeaderView().getContentView().getMeasuredHeight());
+        if (mIsHeaderViewEnable) {
+            if (getAbsHeaderView() == null) {
+                throw new IllegalStateException("Please set HeaderView for RefreshLayout" +
+                        "or invoke RefreshLayout#setHeaderViewEnable(false)");
+            }
+            if (getHeaderViewHeight() == 0) {
+                getAbsHeaderView().getContentView().measure(0, 0);
+                setHeaderViewHeight(getAbsHeaderView().getContentView().getMeasuredHeight());
+            }
+            if (getHeaderViewPullDistance() == 0) {
+                setHeaderViewPullDistance(getHeaderViewHeight());
+            }
+            if (getHeaderViewMaxPullDistance() == 0) {
+                setHeaderViewMaxPullDistance((int) (getHeaderViewHeight() * 2.5f));
+            }
         }
-        if (getFooterViewHeight() == 0) {
-            getAbsFooterView().getContentView().measure(0, 0);
-            setFooterViewHeight(getAbsFooterView().getContentView().getMeasuredHeight());
-        }
-        if (getHeaderViewPullDistance() == 0) {
-            setHeaderViewPullDistance(getHeaderViewHeight());
-        }
-        if (getFooterViewPullDistance() == 0) {
-            setFooterViewPullDistance(getFooterViewHeight());
-        }
-        if (getHeaderViewMaxPullDistance() == 0) {
-            setHeaderViewMaxPullDistance((int) (getHeaderViewHeight() * 2.5f));
-        }
-        if (getFooterViewMaxPullDistance() == 0) {
-            setFooterViewMaxPullDistance((int) (getFooterViewHeight() * 2.5f));
+        if (mIsFooterViewEnable) {
+            if (getAbsFooterView() == null) {
+                throw new IllegalStateException("Please set FooterView for RefreshLayout" + 
+                        "or invoke RefreshLayout#setFooterViewEnable(false)");
+            }
+            if (getFooterViewHeight() == 0) {
+                getAbsFooterView().getContentView().measure(0, 0);
+                setFooterViewHeight(getAbsFooterView().getContentView().getMeasuredHeight());
+            }
+            if (getFooterViewPullDistance() == 0) {
+                setFooterViewPullDistance(getFooterViewHeight());
+            }
+            if (getFooterViewMaxPullDistance() == 0) {
+                setFooterViewMaxPullDistance((int) (getFooterViewHeight() * 2.5f));
+            }
         }
         mAbsRefreshMode = RefreshModeFactory.createRefreshMode(mRefreshMode, this);
     }
@@ -175,11 +187,11 @@ public class RefreshLayout extends FrameLayout implements IRefreshLayout {
         if (Math.abs(yDiff) > mTouchSlop 
                 && !mIsBeingUpDragged && !mIsBeingDownDragged && !mAbsRefreshMode.isAnimRunning()) {
             if (yDiff > 0) {
-                if (!RefreshScrollUtil.canChildPullDown(mContentView)) {
+                if (mIsHeaderViewEnable && !RefreshScrollUtil.canChildPullDown(mContentView)) {
                     mIsBeingDownDragged = true;
                 }
             } else {
-                if (!RefreshScrollUtil.canChildPullUp(mContentView)) {
+                if (mIsFooterViewEnable && !RefreshScrollUtil.canChildPullUp(mContentView)) {
                     mIsBeingUpDragged = true;
                 }
             }
@@ -290,4 +302,5 @@ public class RefreshLayout extends FrameLayout implements IRefreshLayout {
     public RefreshListener getRefreshListener() {
         return mRefreshListener;
     }
+    
 }

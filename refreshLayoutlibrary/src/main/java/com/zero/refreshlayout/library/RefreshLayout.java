@@ -84,7 +84,7 @@ public class RefreshLayout extends FrameLayout implements IRefreshLayout {
         if (mIsHeaderViewEnable) {
             if (getAbsHeaderView() == null) {
                 throw new IllegalStateException("Please set HeaderView for RefreshLayout" +
-                        "or invoke RefreshLayout#setHeaderViewEnable(false)");
+                        ", or invoke RefreshLayout#setHeaderViewEnable(false)");
             }
             if (getHeaderViewHeight() == 0) {
                 getAbsHeaderView().getContentView().measure(0, 0);
@@ -100,7 +100,7 @@ public class RefreshLayout extends FrameLayout implements IRefreshLayout {
         if (mIsFooterViewEnable) {
             if (getAbsFooterView() == null) {
                 throw new IllegalStateException("Please set FooterView for RefreshLayout" + 
-                        "or invoke RefreshLayout#setFooterViewEnable(false)");
+                        ", or invoke RefreshLayout#setFooterViewEnable(false)");
             }
             if (getFooterViewHeight() == 0) {
                 getAbsFooterView().getContentView().measure(0, 0);

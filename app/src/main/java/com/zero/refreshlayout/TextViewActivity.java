@@ -11,6 +11,7 @@ import com.zero.refreshlayout.library.RefreshLayout;
 import com.zero.refreshlayout.library.RefreshListener;
 import com.zero.refreshlayout.library.footer.TextFooterView;
 import com.zero.refreshlayout.library.header.TextHeaderView;
+import com.zero.refreshlayout.library.refreshMode.RefreshMode;
 
 /**
  * @author linzewu
@@ -36,6 +37,7 @@ public class TextViewActivity extends Activity {
         mTextView.setText(mStringBuilder.toString());
 
         mRefreshLayout = (RefreshLayout) findViewById(R.id.refresh_layout);
+        mRefreshLayout.setRefreshMode(RefreshMode.COVER_LAYOUT_BEHIND);
         mRefreshLayout.setHeaderView(new TextHeaderView(this));
         mRefreshLayout.setFooterView(new TextFooterView(this));
         mRefreshLayout.setRefreshListener(new RefreshListener() {

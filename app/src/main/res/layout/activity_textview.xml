@@ -12,7 +12,7 @@
         <TextView
             android:id="@+id/text_view"
             android:text="text"
-            android:background="@android:color/white"
+            android:background="@android:color/holo_orange_dark"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

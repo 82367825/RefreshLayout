@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zero.refreshlayout.library.RefreshLayout;
 import com.zero.refreshlayout.library.RefreshListener;
@@ -70,6 +72,12 @@ public class ListViewActivity extends Activity {
         mListViewAdapter = new ListViewAdapter(mStringList);
         mListView = (ListView) findViewById(R.id.list_view);
         mListView.setAdapter(mListViewAdapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(ListViewActivity.this, "click item " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
         
     }
     

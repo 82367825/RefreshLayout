@@ -80,7 +80,9 @@ mRefreshLayout.setRefreshListener(new RefreshListener() {
 
 ## 个性化使用
 
-### 1）如果你希望视图的布局样式不喜欢，这里暂时提供了另外两种布局样式。
+### 1）布局样式多样化
+
+如果你对视图的布局样式不喜欢，这里暂时提供了另外两种布局样式。
 
 如何切换布局样式，只需要调用
 ```
@@ -111,7 +113,9 @@ mRefreshLayout.setRefreshMode(RefreshMode.COVER_LAYOUT_BEHIND);
 
 ![这里写图片描述](http://img.blog.csdn.net/20170907163520371?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvejgyMzY3ODI1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
-### 2) 最有必要的操作当然定制HeaderView以及FooterView
+### 2) 定制HeaderView以及FooterView
+
+最重要当然是自己定制HeaderView以及FooterView，通过下面简单的例子我们就能轻松看懂
 
 所有的HeaderView都必须继承AbsHeaderView, 所有的FooterView都必须继承AbsFooterView，我们看到，这里实现了一个TextHeaderView类
 
@@ -163,7 +167,9 @@ public class TextHeaderView extends AbsHeaderView {
    
 
 
-### 3）如果我们只是想快速使用，可以使用现成的HeaderView以及FooterView, RefreshLayout暂时提供了几个样式（虽然看起来不咋地）
+### 3）默认提供的HeaderView，FooterView主题
+
+如果我们只是想快速使用，可以使用现成的HeaderView以及FooterView, RefreshLayout暂时提供了几个样式
 
 ```
 mRefreshLayout.setHeaderView(new BezierWaveHeader(this));
@@ -179,6 +185,9 @@ mRefreshLayout.setFooterView(new SquareSpreadFooter(this));
 
 
 ### 更新历史
+
+>*  v1.0.1  
+修复bug
 
 >*  v1.0.1  
 修复bug

@@ -1,7 +1,7 @@
 
 # 下拉刷新库RefreshLayout介绍
 
-github地址：https://github.com/82367825/RefreshLayout
+相关博客介绍：http://blog.csdn.net/z82367825/article/details/77883660
 
 ## 如何引入
 

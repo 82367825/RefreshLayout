@@ -29,6 +29,8 @@ public class RoundSpreadView extends View {
     private boolean mIsParamsInit = false;
     private ValueAnimator mValueAnimator;
 
+    private int mColor = 0x4400AAFF;
+
     public RoundSpreadView(Context context) {
         super(context);
         init();
@@ -48,7 +50,7 @@ public class RoundSpreadView extends View {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setColor(Color.BLUE);
+        mPaint.setColor(mColor);
     }
 
     private void initParams() {

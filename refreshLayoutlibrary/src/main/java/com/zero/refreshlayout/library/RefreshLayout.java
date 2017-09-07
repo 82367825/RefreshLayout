@@ -255,15 +255,17 @@ public class RefreshLayout extends FrameLayout implements IRefreshLayout {
         mIsFooterViewEnable = footerViewEnable;
     }
 
-    public int getHeaderViewPullDistance() {
+    /* 暂时不开放 */
+    protected int getHeaderViewPullDistance() {
         return mHeaderViewPullDistance;
     }
 
     public void setHeaderViewPullDistance(int headerViewPullDistance) {
         mHeaderViewPullDistance = headerViewPullDistance;
     }
-
-    public int getFooterViewPullDistance() {
+    
+    /* 暂时不开放 */
+    protected int getFooterViewPullDistance() {
         return mFooterViewPullDistance;
     }
 

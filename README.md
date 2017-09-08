@@ -189,7 +189,6 @@ mRefreshLayout.setFooterView(new SquareSpreadFooter(this));
 >*  v1.0.1  
 修复bug
 
+### Contact Me
+e-mail: 82367825@qq.com
 
-
-
-github地址：https://github.com/82367825/RefreshLayout

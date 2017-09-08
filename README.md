@@ -7,7 +7,7 @@
 
 在build.gradle文件中加入
 ```
-compile 'com.zero.refreshlayout.library:RefreshLayout:1.0.0'
+compile 'com.zero.refreshlayout.library:RefreshLayout:1.0.1'
 ```
 
 ## 简单使用
@@ -185,9 +185,6 @@ mRefreshLayout.setFooterView(new SquareSpreadFooter(this));
 
 
 ### 更新历史
-
->*  v1.0.1  
-修复bug
 
 >*  v1.0.1  
 修复bug

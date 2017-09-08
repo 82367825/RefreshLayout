@@ -7,7 +7,7 @@
 
 在build.gradle文件中加入
 ```
-compile 'com.zero.refreshlayout.library:RefreshLayout:1.0.1'
+compile 'com.zero.refreshlayout.library:RefreshLayout:1.0.2'
 ```
 
 ## 简单使用

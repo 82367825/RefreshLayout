@@ -77,6 +77,9 @@ mRefreshLayout.setRefreshListener(new RefreshListener() {
 >* void setFooterViewEnable(boolean footerViewEnable) 
 设置FooterView是否可用
 
+>* void setDragObstruction(float dragObstruction)
+设置拖拽阻力，传值范围为0f-1f，值越小，代表阻力越大，如果不设置，默认为0.75f
+
 
 ## 个性化使用
 
@@ -186,7 +189,9 @@ mRefreshLayout.setFooterView(new SquareSpreadFooter(this));
 
 ### 更新历史
 
->*  v1.0.1  
+>*  v1.0.2
+新增RefreshLayout#setDragObstruction(float dragObstruction)方法
+>*  v1.0.1  
 修复bug
 
 ### Contact Me

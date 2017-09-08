@@ -296,6 +296,10 @@ public class RefreshLayout extends FrameLayout implements IRefreshLayout {
     public void setFooterViewMaxPullDistance(int footerViewMaxPullDistance) {
         mFooterViewMaxPullDistance = footerViewMaxPullDistance;
     }
+    
+    public void setDragObstruction(float dragObstruction) {
+        mDragObstruction = dragObstruction;
+    }
 
     public void setRefreshListener(RefreshListener refreshListener) {
         mRefreshListener = refreshListener;
